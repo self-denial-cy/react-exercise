@@ -1,9 +1,7 @@
+import 'react-app-polyfill/stable'; // polyfill
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <>
-    <div>this is a jsx</div>
-  </>
-);
+const rootEl = document.getElementById('root');
+const root = ReactDOM.createRoot(rootEl);
+root.render();
