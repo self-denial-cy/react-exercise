@@ -98,7 +98,7 @@ module.exports = function (proxy, allowedHost) {
     },
     // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     proxy,
-    // TODO 修改为新语法
+    // * warning
     onBeforeSetupMiddleware(devServer) {
       // Keep `evalSourceMapMiddleware`
       // middlewares before `redirectServedPath` otherwise will not have any effect
@@ -110,7 +110,7 @@ module.exports = function (proxy, allowedHost) {
         require(paths.proxySetup)(devServer.app);
       }
     },
-    // TODO 修改为新语法
+    // * warning
     onAfterSetupMiddleware(devServer) {
       // Redirect to `PUBLIC_URL` or `homepage` from `package.json` if url not match
       devServer.app.use(redirectServedPath(paths.publicUrlOrPath));
