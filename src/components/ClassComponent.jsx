@@ -61,10 +61,10 @@ class ClassComponent extends React.Component {
   /**
    * 3. 触发生命周期钩子
    */
-  componentWillMount() {
-    // 组件第一次渲染之前，目前可以用，但是未来可能会被移除【不建议使用】
-    // 类似 Vue 中的 beforeCreated or created
-  }
+  // componentWillMount() {
+  //   // 组件第一次渲染之前，目前可以用，但是未来可能会被移除【不建议使用】
+  //   // 类似 Vue 中的 beforeCreated or created
+  // }
   UNSAFE_componentWillMount() {
     // 如果开启了 React.StrictMode，使用 UNSAFE_componentWillMount 控制台会报红色警告
     // 与 componentWillMount 一样，但是控制台不会再触发黄色警告
