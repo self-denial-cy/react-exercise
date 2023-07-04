@@ -105,3 +105,12 @@
 
 - 将实例 render 方法返回的 virtualDOM 渲染成真实 DOM
 
+##### 深度优先原则
+
+父组件在操作中，遇到子组件，一定是把子组件处理完，才能继续处理父组件
+
+- 初始渲染：父 willMount -> 父 render -> 子 willMount -> 子 render -> 子 didMount -> 父 didMount
+
+- 更新：父 shouldUpdate -> 父 willUpdate -> 父 render -> 子 shouldUpdate -> 子 willUpdate -> 子 render -> 子 didUpdate -> 父 didUpdate
+
+- 销毁：父 willUnmount -> 子 willUnmount -> 子销毁 -> 父销毁

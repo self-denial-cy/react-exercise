@@ -45,6 +45,19 @@ class ClassComponent extends React.Component {
         <div>{title}</div>
         <button
           onClick={() => {
+            /**
+             * 组件更新机制【修改了相关状态/属性，组件视图更新】【内部交互触发更新 or 父组件更新触发子组件更新】
+             * 0. 如果是属性变更，还会触发 componentWillReceiveProps 钩子【来自父组件更新触发子组件更新】
+             * 1. 触发 shouldComponentUpdate 以确定是否允许更新【只能拦截 setState 触发的更新，如果是 forceUpdate，是拦截不住的】
+             * 2. 触发 componentWillUpdate 钩子【在更新之前、不安全【未来或被移除】、状态/属性尚未变更】
+             * 3. 状态/属性变更为最新的状态/属性
+             * 4. 触发 render 函数，组件视图更新
+             *    1. 按照最新的状态/属性，生成最新的 virtualDOM
+             *    2. 和初始生成或者上一次生成的 virtualDOM 进行【DOM-DIFF】
+             *    3. 将差异部分渲染为真实 DOM【减少重排重绘以提升渲染性能】
+             * 5. 触发 componentDidUpdate 钩子，组件更新完毕
+             */
+
             // 与 Vue 不同，React 必须显式调用 setState 触发视图更新
             this.setState({
               count: count + 1
@@ -70,8 +83,39 @@ class ClassComponent extends React.Component {
     // 与 componentWillMount 一样，但是控制台不会再触发黄色警告
   }
 
+  /**
+   * 5. 触发 componentDidMount 钩子，第一次渲染完毕
+   */
   componentDidMount() {
     // 组件第一次渲染完毕，类似 Vue 中的 mounted【页面中已经创建了真实 DOM，所以可以获取到真实 DOM】
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // nextState 存储要修改的最新状态，this.state 存储的还是修改前的状态【此时状态还没有变更】
+    console.log(this.state, nextState);
+    console.log(this.props, nextProps);
+    console.log('shouldComponentUpdate');
+    // 该函数需要返回一个布尔值以决定是否允许更新【状态变更、视图更新】
+    return true;
+  }
+
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    console.log(this.state, nextState);
+    console.log(this.props, nextProps);
+    console.log('componentWillUpdate');
+  }
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(this.props, nextProps);
+    console.log('componentWillReceiveProps');
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
   }
 }
 
