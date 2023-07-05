@@ -7,6 +7,7 @@ import ClassComponent from './components/ClassComponent';
 import ClassComponentPure from './components/ClassComponentPure';
 import RefComponent from './components/RefComponent';
 import Home from './views/home';
+import About from './views/about';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -24,6 +25,7 @@ root.render(
     <ClassComponentPure></ClassComponentPure>
     <RefComponent></RefComponent>
     <Home></Home>
+    <About></About>
   </>
 );
 
@@ -43,6 +45,7 @@ setTimeout(() => {
       <ClassComponentPure></ClassComponentPure>
       <RefComponent></RefComponent>
       <Home></Home>
+      <About></About>
     </>
   );
-}, 5000);
+}, 2000);
