@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom/client';
 import FunctionalComponent from './components/FunctionalComponent';
 import Dialog from './components/Dialog';
 import ClassComponent from './components/ClassComponent';
+import ClassComponentPure from './components/ClassComponentPure';
+import RefComponent from './components/RefComponent';
+import Home from './views/home';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -18,6 +21,9 @@ root.render(
       <button>关闭</button>
     </Dialog>
     <ClassComponent title="这是一个类组件"></ClassComponent>
+    <ClassComponentPure></ClassComponentPure>
+    <RefComponent></RefComponent>
+    <Home></Home>
   </>
 );
 
@@ -34,6 +40,9 @@ setTimeout(() => {
         <button>关闭</button>
       </Dialog>
       <ClassComponent title="这是 5 秒后传递的标题"></ClassComponent>
+      <ClassComponentPure></ClassComponentPure>
+      <RefComponent></RefComponent>
+      <Home></Home>
     </>
   );
 }, 5000);
