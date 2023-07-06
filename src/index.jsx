@@ -9,6 +9,7 @@ import RefComponent from './components/RefComponent';
 import Home from './views/home';
 import About from './views/about';
 import Synthetic from './views/synthetic';
+import HookComponent from './components/HookComponent';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -28,6 +29,7 @@ root.render(
     <Home></Home>
     <About></About>
     <Synthetic></Synthetic>
+    <HookComponent></HookComponent>
   </>
 );
 
@@ -49,6 +51,7 @@ setTimeout(() => {
       <Home></Home>
       <About></About>
       <Synthetic></Synthetic>
+      <HookComponent></HookComponent>
     </>
   );
 }, 2000);
