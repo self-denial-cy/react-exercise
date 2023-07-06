@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件委托</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .root {
+      width: 300px;
+      height: 300px;
+      background-color: lightblue;
+    }
+
+    .outer {
+      width: 200px;
+      height: 200px;
+      background-color: lightgreen;
+    }
+
+    .inner {
+      width: 100px;
+      height: 100px;
+      background-color: lightcoral;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="root center">
+    <div class="outer center">
+      <div class="inner center"></div>
+    </div>
+  </div>
+</body>
+
+<script>
+  /*
+   * 层级结构 window -> document -> html -> body -> root -> outer -> inner
+   * 事件具备传播机制，例如，当触发 inner 的点击行为时
+   * 第一步，从最外层向最里层逐一查找【捕获阶段，分析出路径】
+   * 第二步，把事件源【点击的这个元素】的点击行为触发【目标阶段】
+   * 第三步，按照捕获阶段分析出的路径，从里到外，把每一个元素的点击行为也触发【冒泡阶段】
+   *
+   * 事件和事件绑定
+   * 事件是浏览器赋予元素的默认行为
+   * 事件绑定是给这个行为绑定一个方法
+   * 即使没有给事件绑定方法，这个事件也会被触发，只不过啥事都不做而已【因为没有绑定方法】
+   *
+   * 通过 stopPropagation/stopImmediatePropagation 可以阻止事件传播
+   * stopPropagation 只是阻止了事件传播，但是如果在 inner 冒泡阶段还绑定了其它方法，其它方法依旧会执行【阻止到这个阶段】
+   * stopImmediatePropagation 如果在 inner 冒泡阶段绑定了其它方法，其它方法不会执行【阻止到当前这个方法】
+   */
+  // const html = document.documentElement
+  // const body = document.body
+  // const root = document.querySelector('.root')
+  // const outer = document.querySelector('.outer')
+  // const inner = document.querySelector('.inner')
+
+  // root.addEventListener('click', function () {
+  //   console.log('root 捕获')
+  // }, true)
+
+  // root.addEventListener('click', function () {
+  //   console.log('root 冒泡')
+  // }, false)
+
+  // outer.addEventListener('click', function () {
+  //   console.log('outer 捕获')
+  // }, true)
+
+  // outer.addEventListener('click', function () {
+  //   console.log('outer 冒泡')
+  // }, false)
+
+  // inner.addEventListener('click', function () {
+  //   console.log('inner 捕获')
+  // }, true)
+
+  // inner.addEventListener('click', function () {
+  //   console.log('inner 冒泡')
+  // }, false)
+</script>
+
+<script>
+  /*
+   * 事件委托，利用事件的传播机制，实现的一套事件绑定处理机制
+   * 只需要给外层容器做一个事件绑定【点击内部的任何元素，根据事件的冒泡传播机制，都会让容器的事件也触发，在这里根据事件源做对应处理即可】
+   * 优势，提升运行性能，并且把处理逻辑集中在一起，还可以给动态添加的元素做事件绑定【提前写好匹配规则和处理逻辑就行】
+   * 限制，当前操作的事件必须支持冒泡传播机制才行【例如 mouseenter 等事件是没有冒泡传播机制的】；如果单独做的事件绑定中，阻止了事件传播，
+   * 事件委托里的操作也会被干扰
+   */
+  const body = document.body
+  body.addEventListener('click', function (e) {
+    const target = e.target
+    if (target.classList.contains('root')) {
+      console.log('root')
+    } else if (target.classList.contains('outer')) {
+      console.log('outer')
+    } else if (target.classList.contains('inner')) {
+      console.log('inner')
+    }
+  })
+</script>
+
+</html>

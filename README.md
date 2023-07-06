@@ -114,3 +114,24 @@
 - 更新：父 shouldUpdate -> 父 willUpdate -> 父 render -> 子 shouldUpdate -> 子 willUpdate -> 子 render -> 子 didUpdate -> 父 didUpdate
 
 - 销毁：父 willUnmount -> 子 willUnmount -> 子销毁 -> 父销毁
+
+#### React 中事件的一些细节
+
+##### 移动端的 click 的 300ms 延迟问题
+
+- 移动端的 click 是单击事件，pc 端的 click 是点击事件
+- 如果连续点击两下
+  - pc 端会触发两次 click 和一次 dbclick
+  - 移动端不会触发 click，只会触发 dbclick
+- 所谓的单击事件，第一次点击后，监听 300ms 看是否还有第二次点击，如果没有就是单击，如果有就是双击，这就是 300ms 延迟的由来
+
+由于 300ms 延迟的问题，移动端中一般使用 touch 来模拟点击效果【可以自己实现 or fastclick 这个包】
+
+- touchstart 手指触摸屏幕
+- touchmove 手指在屏幕上移动【保证移动距离在一定误差内】
+- touchend 手指离开屏幕
+
+##### 循环渲染中的事件绑定与 Vue 框架的区别
+
+- React 在循环渲染中绑定事件，比如 onClick，并不会给循环渲染出来的每个元素直接绑定事件，只是给该元素挂载了一个 onClick 属性，最后还是通过 #root 容器上的事件委托来处理的
+- Vue 在循环渲染中绑定事件，就是直接给每个元素直接绑定事件，不过可以自行实现事件委托的机制【标记好每个元素，然后在其父元素上监听处理】
