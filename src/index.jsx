@@ -29,7 +29,7 @@ root.render(
     <Home></Home>
     <About></About>
     <Synthetic></Synthetic>
-    <HookComponent></HookComponent>
+    <HookComponent x={13} y={14}></HookComponent>
   </>
 );
 
@@ -51,7 +51,7 @@ setTimeout(() => {
       <Home></Home>
       <About></About>
       <Synthetic></Synthetic>
-      <HookComponent></HookComponent>
+      <HookComponent x={13} y={14}></HookComponent>
     </>
   );
 }, 2000);
