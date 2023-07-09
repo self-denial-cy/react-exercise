@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { flushSync } from 'react-dom';
 
 /**
@@ -60,6 +60,28 @@ export default function HookComponent(props) {
 
   console.log('HookComponent render'); // 因为双 fiber 机制会触发两次
 
+  /**
+   * useEffect 底层机制
+   * 初始渲染时，通过 MountEffect 方法将 callback/依赖项加入到 effect 链表中
+   * 在视图渲染完毕时，基于 UpdateEffect 方法通知 effect 链表中 callback 按照要求执行【要求如下】
+   * 后续渲染更新时，将上一次的 effect 链表中 callback 执行返回的函数执行【函数中若引用了状态，自然是上一次上下文中的状态】
+   * 然后继续通过 MountEffect 方法将 callback/依赖项加入到一个新的 effect 链表中
+   * ...
+   * 如此循环反复
+   *
+   * 注意，useEffect 必须声明在 Hook 组件上下文的顶层，不能出现在条件语句，循环语句等中
+   * 并且如果 useEffect 的 callback 中如果要返回些什么，那必须是函数【因此不能给 callback 加上 async 修饰符【会导致 callback 返回一个 Promise 实例】】
+   *
+   * useLayoutEffect 和 useEffect 的区别
+   * 大体上一样，但是在执行时机和执行机制上有点区别
+   * useLayoutEffect 会阻塞视图渲染，必须等 useLayoutEffect 插入到 effect 链表中 callback 执行完毕才会继续【同步】
+   * 而 useEffect 不会阻塞视图渲染，而是并行执行 useEffect 插入到 effect 链表中的 callback【异步】
+   * 因此，实际运用中，官方更推荐使用 useEffect【因为它不会阻塞渲染过程，性能更佳】，但是如果 callback 中的操作会影响到页面样式 or 布局，可以考虑
+   * 使用 useLayoutEffect【只是考虑，因为大部分交互场景中，就算 callback 中操作影响页面样式 or 布局，操作频率也不会导致出现闪烁异常】
+   * 至于执行时机，涉及到一些 render 阶段的源码【后续研究】，这里简单记录下
+   * useEffect 在 commit 阶段结尾异步调用，而 useLayoutEffect 在 commit 阶段中同步调用【与 componentDidMount 执行时机一致，这时真实节点已经更新，可以获取最新的节点】
+   */
+
   // 在组件初始渲染及后续更新时触发，类似 componentDidMount、componentDidUpdate
   useEffect(() => {
     console.log('@1', count); // 获取的是最新状态
@@ -115,4 +137,4 @@ export default function HookComponent(props) {
   );
 }
 
-// TODO 36 24:15
+// TODO 38 01:05
