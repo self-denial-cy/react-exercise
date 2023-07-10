@@ -6,10 +6,11 @@ import Dialog from './components/Dialog';
 import ClassComponent from './components/ClassComponent';
 import ClassComponentPure from './components/ClassComponentPure';
 import RefComponent from './components/RefComponent';
-import Home from './views/home';
-import About from './views/about';
+import Home from './views/state';
+import About from './views/synthetic-syntax';
 import Synthetic from './views/synthetic';
 import HookComponent from './components/HookComponent';
+import { ClassCommunication } from './views/communication';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -30,6 +31,7 @@ root.render(
     <About></About>
     <Synthetic></Synthetic>
     <HookComponent x={13} y={14}></HookComponent>
+    <ClassCommunication></ClassCommunication>
   </>
 );
 
@@ -52,6 +54,7 @@ setTimeout(() => {
       <About></About>
       <Synthetic></Synthetic>
       <HookComponent x={13} y={14}></HookComponent>
+      <ClassCommunication></ClassCommunication>
     </>
   );
 }, 2000);

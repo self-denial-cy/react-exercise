@@ -1,4 +1,5 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useLayoutEffect, useRef, useImperativeHandle, useMemo, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 
 /**
@@ -36,6 +37,10 @@ import { flushSync } from 'react-dom';
  * 如果发现新老状态一致，不会变更状态，也不会触发视图更新【这个机制类似类组件中的 PureComponent 中的 shouldComponentUpdate 的浅比较】
  * 注意，获取最新状态并不是那么简单，React 中的双 fiber 机制导致了，如果连续 setState 同样的值，在第三次才能拦截住【具体细节后续研究研究】
  */
+
+let prev2, prev3;
+
+let prevHandle;
 
 export default function HookComponent(props) {
   /**
@@ -90,7 +95,6 @@ export default function HookComponent(props) {
   // 只在组件初始渲染时触发，类似 componentDidMount【第二个参数可以传入依赖项，空数组表示无任何依赖，因此只在初始渲染时触发一次，后续任何状态变更都不会触发】
   useEffect(() => {
     console.log('@2', count); // 获取的是最新状态
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handlePositionChange() {
@@ -115,7 +119,6 @@ export default function HookComponent(props) {
     return () => {
       console.log('@5', count);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 仅在依赖项变更时触发【可以声明多个依赖项】
@@ -125,16 +128,114 @@ export default function HookComponent(props) {
     };
   }, [count]);
 
+  /**
+   * Hook 函数只能在 Hook 组件中使用
+   * useRef 与 React.createRef 的区别在于，组件更新时会重新执行函数，这个过程中上一次 React.createRef 创建的对象会被丢弃
+   * 而上一次 useRef 创建的对象会被重复使用【性能更佳】
+   * 推荐在 Hook 组件中使用 useRef，在类组件中使用 React.createRef
+   */
+
+  let ref1 = null;
+  const ref2 = React.createRef();
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+
+  if (!prev2 || !prev3) {
+    prev2 = ref2;
+    prev3 = ref3;
+  } else {
+    console.log(ref2 === prev2); // false
+    console.log(ref3 === prev3); // true
+  }
+
+  useEffect(() => {
+    console.log(ref1); // 不推荐使用
+    console.log(ref2);
+    console.log(ref3);
+    console.log(ref4);
+  }, []);
+
+  const memo = useMemo(() => {
+    console.log('依赖项变更，重新计算缓存');
+    return Math.sqrt(Math.pow(position[0], 2) + Math.pow(position[1], 2));
+  }, [position]);
+
+  /**
+   * 函数式组件在每次视图更新时，都会重新执行一遍函数，内部的函数声明都会重新执行一遍，因此引用地址会一直变化
+   * useCallback 就是用来解决这个问题的
+   * 但是 useCallback 并不是就是最佳选择，虽然它有效减少堆内存开辟【新的函数声明】，但是它本身也有处理逻辑和缓存处理的机制
+   * 使用后并不一定就是性能最佳的选择【而且视图更新，函数重新执行，上一次的上下文闭包就会被回收，因此并不会特别影响性能】
+   * 使用场景，父组件将函数当作属性传递给子组件时【父组件重新渲染【跟传递的函数无关的状态变更导致的视图更新】，函数的引用地址发生变更，导致子组件也跟着更新】
+   * 除了保证传递的函数引用地址不发生变更，还要保证子组件开启属性浅比较【类组件需要继承 PureComponent，函数式组件需要用 React.memo 包裹起来】
+   * 这样性能最佳
+   */
+
+  const handle = useCallback(() => {
+    // 第二个参数是用来设置依赖项的，只有当依赖项发生变更时，函数声明才会重新执行
+  }, [count]);
+
+  if (!prevHandle) {
+    prevHandle = handle;
+  } else {
+    console.log('函数声明未重新执行', prevHandle === handle);
+  }
+
   return (
     <>
       <div>我是一个 Hook 组件</div>
+      <div ref={(el) => (ref1 = el)}> 我可以被 ref 获取到</div>
+      <div ref={ref2}>嘿，我也可以</div>
+      <div ref={ref3}>啧，谁不行呢</div>
       <button onClick={handleClick}> {count}</button>
       <p>
         ({position[0]}, {position[1]})
       </p>
+      <p>计算缓存：{memo}</p>
       <button onClick={handlePositionChange}>change</button>
+      <ChildComponent ref={ref4}></ChildComponent>
+      <ChildComponent2 handle={handle}></ChildComponent2>
+      <ChildComponent3 handle={handle}></ChildComponent3>
     </>
   );
 }
 
-// TODO 38 01:05
+const ChildComponent = React.forwardRef((props, ref) => {
+  const [count, setCount] = useState(0);
+  const ref1 = useRef(null);
+
+  useImperativeHandle(ref, () => {
+    // 这里返回的对象就是父组件可以获取到的东西，useImperativeHandle 相当于篡改了 ref
+    return {
+      count,
+      setCount,
+      ref1
+    };
+  });
+
+  return (
+    <>
+      <div ref={ref1}>我是一个子组件</div>
+    </>
+  );
+});
+
+class ChildComponent2 extends React.PureComponent {
+  render() {
+    console.log('子组件2 重新渲染');
+    return (
+      <>
+        <div>我是 ChildComponent2</div>
+      </>
+    );
+  }
+}
+
+const ChildComponent3 = React.memo(() => {
+  console.log('子组件3 重新渲染');
+
+  return (
+    <>
+      <div>我是 ChildComponent3</div>
+    </>
+  );
+});
