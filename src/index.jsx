@@ -10,7 +10,7 @@ import Home from './views/state';
 import About from './views/synthetic-syntax';
 import Synthetic from './views/synthetic';
 import HookComponent from './components/HookComponent';
-import { ClassCommunication } from './views/communication';
+import { ClassComponentContext, FunctionalComponentContext } from './views/context';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -31,7 +31,8 @@ root.render(
     <About></About>
     <Synthetic></Synthetic>
     <HookComponent x={13} y={14}></HookComponent>
-    <ClassCommunication></ClassCommunication>
+    <ClassComponentContext></ClassComponentContext>
+    <FunctionalComponentContext></FunctionalComponentContext>
   </>
 );
 
@@ -54,7 +55,10 @@ setTimeout(() => {
       <About></About>
       <Synthetic></Synthetic>
       <HookComponent x={13} y={14}></HookComponent>
-      <ClassCommunication></ClassCommunication>
+      <ClassComponentContext></ClassComponentContext>
+      <FunctionalComponentContext></FunctionalComponentContext>
     </>
   );
 }, 2000);
+
+// 49
