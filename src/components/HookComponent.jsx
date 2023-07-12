@@ -183,7 +183,7 @@ export default function HookComponent(props) {
   return (
     <>
       <div>我是一个 Hook 组件</div>
-      <div ref={(el) => (ref1 = el)}> 我可以被 ref 获取到</div>
+      <div ref={(el) => (ref1 = el)}>我可以被 ref 获取到</div>
       <div ref={ref2}>嘿，我也可以</div>
       <div ref={ref3}>啧，谁不行呢</div>
       <button onClick={handleClick}> {count}</button>
