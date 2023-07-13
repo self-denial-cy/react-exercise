@@ -11,6 +11,7 @@ import About from './views/synthetic-syntax';
 import Synthetic from './views/synthetic';
 import HookComponent from './components/HookComponent';
 import { ClassComponentContext, FunctionalComponentContext } from './views/context';
+import { ReduxView } from './views/redux';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -33,6 +34,7 @@ root.render(
     <HookComponent x={13} y={14}></HookComponent>
     <ClassComponentContext></ClassComponentContext>
     <FunctionalComponentContext></FunctionalComponentContext>
+    <ReduxView></ReduxView>
   </>
 );
 
@@ -57,8 +59,9 @@ setTimeout(() => {
       <HookComponent x={13} y={14}></HookComponent>
       <ClassComponentContext></ClassComponentContext>
       <FunctionalComponentContext></FunctionalComponentContext>
+      <ReduxView></ReduxView>
     </>
   );
 }, 2000);
 
-// TODO 55
+// TODO 56

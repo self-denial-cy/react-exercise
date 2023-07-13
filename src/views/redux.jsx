@@ -1,3 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useState, useEffect } from 'react';
+import store from '../store';
+import StoreContext from '../context/StoreContext';
+
 /**
  * 1. 创建全局公共的容器，用来存储各组件需要的公共信息
  *    在创建的 store 容器中，存储两部分内容，公共状态【各组件需要共享/通信的信息】、事件池【存放让组件可以更新的方法】
@@ -19,3 +24,41 @@
  *
  * 若多个组件都需要用到创建的 store，可以在其公共的根组件中，将其放入上下文中，后续只要是该根组件的后代组件，都可以直接使用
  */
+
+export function ReduxView() {
+  return (
+    <StoreContext.Provider value={{ store }}>
+      <ReduxHeader></ReduxHeader>
+    </StoreContext.Provider>
+  );
+}
+
+function ReduxHeader() {
+  const { store } = useContext(StoreContext);
+  const { title } = store.getState(); // 获取 store 容器中的状态信息
+  // 组件初始渲染 or 更新后，将让组件更新的方法，放入 store 容器的事件池中
+  const [count, setCount] = useState(0);
+  function update() {
+    setCount(count + 1);
+  }
+  useEffect(() => {
+    const unSubscribe = store.subscribe(update); // unSubscribe 执行可以将刚刚放入事件池中的方法移除掉
+    return () => {
+      unSubscribe(); // 当组件更新时，将上一个闭包中放入事件池的方法移除掉
+    };
+  }, [count]);
+  return (
+    <>
+      <p>{title}</p>
+      <button
+        onClick={() => {
+          store.dispatch({
+            type: 'titleChange'
+          });
+        }}
+      >
+        click
+      </button>
+    </>
+  );
+}
