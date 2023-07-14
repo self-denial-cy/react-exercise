@@ -2,6 +2,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import store from '../store';
 import StoreContext from '../context/StoreContext';
+import action from '../store/action';
+import { Provider, connect } from 'react-redux';
 
 /**
  * 1. 创建全局公共的容器，用来存储各组件需要的公共信息
@@ -27,15 +29,20 @@ import StoreContext from '../context/StoreContext';
 
 export function ReduxView() {
   return (
-    <StoreContext.Provider value={{ store }}>
-      <ReduxHeader></ReduxHeader>
-    </StoreContext.Provider>
+    <>
+      <StoreContext.Provider value={{ store }}>
+        <ReduxHeader></ReduxHeader>
+      </StoreContext.Provider>
+      <Provider store={store}>
+        <ReduxContainer></ReduxContainer>
+      </Provider>
+    </>
   );
 }
 
 function ReduxHeader() {
   const { store } = useContext(StoreContext);
-  const { title } = store.getState(); // 获取 store 容器中的状态信息
+  const { app } = store.getState(); // 获取 store 容器中的状态信息
   // 组件初始渲染 or 更新后，将让组件更新的方法，放入 store 容器的事件池中
   const [count, setCount] = useState(0);
   function update() {
@@ -49,12 +56,10 @@ function ReduxHeader() {
   }, [count]);
   return (
     <>
-      <p>{title}</p>
+      <p>{app.title}</p>
       <button
         onClick={() => {
-          store.dispatch({
-            type: 'titleChange'
-          });
+          store.dispatch(action.app.titleChange());
         }}
       >
         click
@@ -62,3 +67,45 @@ function ReduxHeader() {
     </>
   );
 }
+
+/**
+ * connect(mapStateToProps, mapDispatchToProps)(组件)
+ * 1. mapStateToProps 可以获取到 redux 中的公共状态，将需要的信息作为属性，传递给组件
+ *    connect(state => {
+ *        state 存储 redux 容器中，所有模块的公共状态信息
+ *        return {
+ *            返回对象中的信息，就是要作为属性传递给组件的信息
+ *            title: state.app.title
+ *        }
+ *    })
+ * 2. mapDispatchToProps 把需要派发的任务，作为属性传递给组件
+ *    connect(null, dispatch => {
+ *        dispatch 就是 store.dispatch 派发任务的方法
+ *        return {
+ *            返回对象中的信息，会作为属性传递给组件
+ *        }
+ *    })
+ */
+
+const ReduxContainer = connect(
+  (state) => {
+    return state.app;
+  },
+  action.app // connect 内部使用了 redux 的 bindActionCreators 方法将 action.app 转换为下面的这种形式
+  // (dispatch) => {
+  //   return {
+  //     countChange() {
+  //       dispatch(action.app.countChange());
+  //     }
+  //   };
+  // }
+)((props) => {
+  return (
+    <>
+      <p>{props.title}</p>
+      <hr />
+      <p>react-redux 初体验</p>
+      <button onClick={props.countChange}>{props.count}</button>
+    </>
+  );
+});

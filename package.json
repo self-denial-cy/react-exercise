@@ -18,10 +18,12 @@
     "stylelint": "stylelint \"src/**/*.{less,scss,css}\" --ignore-path .gitignore --fix --allow-empty-input"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1",
     "redux": "^4.2.1"
   },
   "devDependencies": {
