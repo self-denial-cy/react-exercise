@@ -12,6 +12,8 @@
     [
       "@babel/plugin-proposal-class-properties",
       {
+        // loose 为 false 时，使用 Object.defineProperty 定义类中的私有属性或静态属性
+        // loose 为 true 时，直接赋值给类的私有属性或静态属性
         "loose": true
       }
     ]
