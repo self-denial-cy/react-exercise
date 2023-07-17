@@ -12,6 +12,7 @@ import Synthetic from './views/synthetic';
 import HookComponent from './components/HookComponent';
 import { ClassComponentContext, FunctionalComponentContext } from './views/context';
 import { ReduxView } from './views/redux';
+import './decorator'; // 装饰器
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -64,4 +65,4 @@ setTimeout(() => {
   );
 }, 2000);
 
-// ! 69
+// ! 73 00:16

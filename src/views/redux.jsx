@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from 'react';
-import store from '../store';
+import store, { latestStore } from '../store';
 import StoreContext from '../context/StoreContext';
 import action from '../store/action';
-import { Provider, connect } from 'react-redux';
+import { Provider, connect, useSelector, useDispatch } from 'react-redux';
+import { titleChange, countChange } from '../store/feature';
 
 /**
  * 1. 创建全局公共的容器，用来存储各组件需要的公共信息
@@ -35,6 +36,9 @@ export function ReduxView() {
       </StoreContext.Provider>
       <Provider store={store}>
         <ReduxContainer></ReduxContainer>
+      </Provider>
+      <Provider store={latestStore}>
+        <ReduxFooter></ReduxFooter>
       </Provider>
     </>
   );
@@ -109,3 +113,22 @@ const ReduxContainer = connect(
     </>
   );
 });
+
+function ReduxFooter() {
+  const { title, count } = useSelector((state) => state.app);
+  const dispatch = useDispatch();
+  return (
+    <>
+      <hr />
+      <p>{title}</p>
+      <button
+        onClick={() => {
+          dispatch(titleChange());
+          dispatch(countChange());
+        }}
+      >
+        {count}
+      </button>
+    </>
+  );
+}

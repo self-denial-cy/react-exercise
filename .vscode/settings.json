@@ -3,7 +3,7 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "eslint.probe": [
     "typescriptreact",
     "javascriptreact",
@@ -16,6 +16,7 @@
     "less",
     "css"
   ],
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
   "files.eol": "\n",
   "cSpell.words": [
     "aashutoshrathi",
@@ -214,6 +215,7 @@
     "rebeccapurple",
     "rechoir",
     "redent",
+    "reduxjs",
     "regexes",
     "regexpp",
     "regexpu",

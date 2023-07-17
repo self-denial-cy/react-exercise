@@ -2,6 +2,8 @@ import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import reducer from './reducer';
 import reduxLogger from 'redux-logger';
 import reduxThunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import { appReducer } from './feature';
 
 // store 容器
 const store = createStore(reducer, applyMiddleware(reduxLogger, reduxThunk));
@@ -12,3 +14,13 @@ const store = createStore(reducer, applyMiddleware(reduxLogger, reduxThunk));
  */
 
 export default store;
+
+export const latestStore = configureStore({
+  // 传入 reducer 和设置中间件
+  reducer: {
+    // 按模块管理各个切片
+    app: appReducer
+  },
+  // 不设置 middleware 则默认集成了 redux-thunk 中间件，一旦设置就得设置全【因为是全量覆盖默认配置】
+  middleware: [reduxLogger, reduxThunk]
+});
