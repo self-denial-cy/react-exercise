@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/synthetic.scss';
 
-export default class Synthetic extends React.Component {
+export default class SyntheticView extends React.Component {
   render() {
     return (
       <>

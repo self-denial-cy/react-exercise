@@ -1,7 +1,7 @@
 import React from 'react';
 import { flushSync } from 'react-dom';
 
-export default class Home extends React.Component {
+export default class StateView extends React.Component {
   state = {
     x: 1,
     y: 1,

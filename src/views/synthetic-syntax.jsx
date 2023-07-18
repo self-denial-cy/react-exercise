@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class About extends React.Component {
+export default class SyntheticSyntaxView extends React.Component {
   /**
    * 合成事件【Synthetic Event】是 React 封装的一套机制，用于保证各个浏览器之间事件机制的行为统一
    */

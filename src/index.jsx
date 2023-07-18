@@ -6,13 +6,15 @@ import Dialog from './components/Dialog';
 import ClassComponent from './components/ClassComponent';
 import ClassComponentPure from './components/ClassComponentPure';
 import RefComponent from './components/RefComponent';
-import Home from './views/state';
-import About from './views/synthetic-syntax';
-import Synthetic from './views/synthetic';
+import StateView from './views/state';
+import SyntheticSyntaxView from './views/synthetic-syntax';
+import SyntheticView from './views/synthetic';
 import HookComponent from './components/HookComponent';
 import { ClassComponentContext, FunctionalComponentContext } from './views/context';
 import { ReduxView } from './views/redux';
 import './decorator'; // 装饰器
+import { MobxClassView, MobxFunctionalView } from './views/mobx';
+import App from './App';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -29,13 +31,17 @@ root.render(
     <ClassComponent title="这是一个类组件"></ClassComponent>
     <ClassComponentPure></ClassComponentPure>
     <RefComponent></RefComponent>
-    <Home></Home>
-    <About></About>
-    <Synthetic></Synthetic>
+    <StateView></StateView>
+    <SyntheticSyntaxView></SyntheticSyntaxView>
+    <SyntheticView></SyntheticView>
     <HookComponent x={13} y={14}></HookComponent>
     <ClassComponentContext></ClassComponentContext>
     <FunctionalComponentContext></FunctionalComponentContext>
     <ReduxView></ReduxView>
+    <MobxClassView></MobxClassView>
+    <MobxFunctionalView></MobxFunctionalView>
+    <hr />
+    <App></App>
   </>
 );
 
@@ -54,15 +60,19 @@ setTimeout(() => {
       <ClassComponent title="这是 5 秒后传递的标题"></ClassComponent>
       <ClassComponentPure></ClassComponentPure>
       <RefComponent></RefComponent>
-      <Home></Home>
-      <About></About>
-      <Synthetic></Synthetic>
+      <StateView></StateView>
+      <SyntheticSyntaxView></SyntheticSyntaxView>
+      <SyntheticView></SyntheticView>
       <HookComponent x={13} y={14}></HookComponent>
       <ClassComponentContext></ClassComponentContext>
       <FunctionalComponentContext></FunctionalComponentContext>
       <ReduxView></ReduxView>
+      <MobxClassView></MobxClassView>
+      <MobxFunctionalView></MobxFunctionalView>
+      <hr />
+      <App></App>
     </>
   );
 }, 2000);
 
-// ! 75    74 mobx5 实践下
+// ! 78
