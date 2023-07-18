@@ -29,7 +29,7 @@ export default function App() {
       <div>这里是单页面应用，即将开始使用 React Router</div>
       {/* 路由导航 */}
       <nav>
-        <Link to="/">首页</Link>
+        <Link to="/home">首页</Link>
         <span> | </span>
         <Link to="/about">关于</Link>
         <span> | </span>
@@ -40,9 +40,20 @@ export default function App() {
         {/* Switch 保证了只要匹配到了路由，就不会再向下匹配 */}
         <Switch>
           {/* exact 属性开启了精准匹配 */}
-          <Route exact path="/" component={Home}></Route>
+          <Redirect exact from="/" to="/home"></Redirect>
+          <Route path="/home" component={Home}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/my" component={My}></Route>
+          <Route
+            path="/404"
+            render={() => {
+              // 当路由地址匹配时，将 render 函数执行，返回值就是渲染的内容
+              // 在此函数中，可以添加一些逻辑校验，例如，登录态校验
+              const isLogin = true;
+              if (isLogin) return <NotFound></NotFound>;
+              return <Redirect to="/"></Redirect>;
+            }}
+          ></Route>
           {/* 最后一项，path 设置为 * 或者不写，表示以上都不匹配，则执行这个规则 */}
           {/* <Route component={NotFound}></Route> */}
           {/* 也可以不设置 404 页面，而是重定向到首页
