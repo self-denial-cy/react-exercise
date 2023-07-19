@@ -15,6 +15,7 @@ import { ReduxView } from './views/redux';
 import './decorator'; // 装饰器
 import { MobxClassView, MobxFunctionalView } from './views/mobx';
 import App from './App';
+import LatestApp from './LatestApp';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -40,8 +41,10 @@ root.render(
     <ReduxView></ReduxView>
     <MobxClassView></MobxClassView>
     <MobxFunctionalView></MobxFunctionalView>
+    {/* <hr />
+    <App></App> */}
     <hr />
-    <App></App>
+    <LatestApp></LatestApp>
   </>
 );
 
@@ -69,10 +72,12 @@ setTimeout(() => {
       <ReduxView></ReduxView>
       <MobxClassView></MobxClassView>
       <MobxFunctionalView></MobxFunctionalView>
+      {/* <hr />
+      <App></App> */}
       <hr />
-      <App></App>
+      <LatestApp></LatestApp>
     </>
   );
 }, 2000);
 
-// ! 83
+// ! 85

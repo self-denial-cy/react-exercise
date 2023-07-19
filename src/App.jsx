@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { HashRouter, BrowserRouter, Route, Switch, Redirect, Link, useHistory } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Route, Switch, Redirect, Link, useHistory, NavLink } from 'react-router-dom';
 import Home from './views/home';
 import About from './views/about';
 import My from './views/my';
@@ -35,11 +35,12 @@ export default function App() {
       </div>
       {/* 路由导航 */}
       <nav>
-        <Link to="/home">首页</Link>
+        {/* NavLink 和 Link 组件用法一致，但是 NavLink 会给与当前路由地址匹配的 a 标签添加一个 active 的类，用于设置选中状态样式 */}
+        <NavLink to="/home">首页</NavLink>
         <span> | </span>
-        <Link to="/about">关于</Link>
+        <NavLink to="/about">关于</NavLink>
         <span> | </span>
-        <Link to="/my">我的</Link>
+        <NavLink to="/my">我的</NavLink>
       </nav>
       {/* 路由容器 */}
       <div>
