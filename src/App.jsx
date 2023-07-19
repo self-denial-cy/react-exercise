@@ -1,9 +1,11 @@
-import React from 'react';
-import { HashRouter, BrowserRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { HashRouter, BrowserRouter, Route, Switch, Redirect, Link, useHistory } from 'react-router-dom';
 import Home from './views/home';
 import About from './views/about';
 import My from './views/my';
 import NotFound from './views/404';
+import { RouterView, routes } from './router';
+import qs from 'qs';
 
 /**
  * 基于 HashRouter 或 BrowserRouter 将要渲染的内容包裹起来，开启路由控制
@@ -26,7 +28,11 @@ import NotFound from './views/404';
 export default function App() {
   return (
     <HashRouter>
-      <div>这里是单页面应用，即将开始使用 React Router</div>
+      <div>
+        <span>这里是单页面应用，即将开始使用 React Router</span>
+        <span> | </span>
+        <Navigation></Navigation>
+      </div>
       {/* 路由导航 */}
       <nav>
         <Link to="/home">首页</Link>
@@ -42,9 +48,28 @@ export default function App() {
           {/* exact 属性开启了精准匹配 */}
           <Redirect exact from="/" to="/home"></Redirect>
           <Route path="/home" component={Home}></Route>
-          <Route path="/about" component={About}></Route>
-          <Route path="/my" component={My}></Route>
           <Route
+            path="/about/:id?"
+            render={(props) => {
+              return (
+                // 懒加载的路由组件需要包裹在 Suspense 组件中
+                <Suspense>
+                  <About {...props}></About>
+                </Suspense>
+              );
+            }}
+          ></Route>
+          <Route
+            path="/my"
+            render={(props) => {
+              return (
+                <Suspense>
+                  <My {...props}></My>
+                </Suspense>
+              );
+            }}
+          ></Route>
+          {/* <Route
             path="/404"
             render={() => {
               // 当路由地址匹配时，将 render 函数执行，返回值就是渲染的内容
@@ -53,7 +78,7 @@ export default function App() {
               if (isLogin) return <NotFound></NotFound>;
               return <Redirect to="/"></Redirect>;
             }}
-          ></Route>
+          ></Route> */}
           {/* 最后一项，path 设置为 * 或者不写，表示以上都不匹配，则执行这个规则 */}
           {/* <Route component={NotFound}></Route> */}
           {/* 也可以不设置 404 页面，而是重定向到首页
@@ -65,6 +90,74 @@ export default function App() {
           <Redirect to="/"></Redirect>
         </Switch>
       </div>
+      <hr />
+      <div>
+        <RouterView routes={routes}></RouterView>
+      </div>
     </HashRouter>
+  );
+}
+
+function Navigation() {
+  const history = useHistory();
+  return (
+    <>
+      <button
+        onClick={() => {
+          /**
+           * 类似 Vue Router 的 query 传参
+           * 传递的信息出现在 URL 中，但是丑、不安全、有长度限制
+           * 信息是显式的，即使在目标路由刷新页面，传递的信息依旧存在
+           */
+          // history.push('/my?a=1&b=2&c=3');
+          // history.push({
+          //   pathname: '/my',
+          //   search: 'a=1&b=2&c=3'
+          // });
+          history.push({
+            pathname: '/my',
+            search: qs.stringify({
+              a: 1,
+              b: 2,
+              c: 3
+            })
+          });
+        }}
+      >
+        search 传参
+      </button>
+      <button
+        onClick={() => {
+          /**
+           * 类似 Vue Router 的 params 传参
+           * 传递的信息也在 URL 中，比问号传参好看些，但是也存在安全问题和长度限制
+           * 信息是显式的，即使在目标路由刷新页面，传递的信息依旧存在
+           */
+          // history.push('/about/123');
+          history.push({
+            pathname: '/about/123'
+          });
+        }}
+      >
+        params 传参
+      </button>
+      <button
+        onClick={() => {
+          /**
+           * 传递的信息不会出现在 URL 中，安全、美观、无长度限制
+           * 但是在目标路由刷新页面，会丢失传递信息
+           */
+          history.push({
+            pathname: '/about',
+            state: {
+              id: 999,
+              text: '我是隐式信息哟~'
+            }
+          });
+        }}
+      >
+        state 传参
+      </button>
+    </>
   );
 }
