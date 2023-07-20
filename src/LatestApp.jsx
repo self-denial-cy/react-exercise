@@ -1,9 +1,25 @@
-import { HashRouter, Routes, Route, Navigate, Link, NavLink, Outlet } from 'react-router-dom-v6';
+import {
+  HashRouter,
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+  useParams
+} from 'react-router-dom-v6';
 
 /**
  * react-router-dom v6 中移除了 Switch、Redirect、withRouter 组件
  * Navigate 组件替代了 Redirect 组件
  * withRouter 得靠自行实现一个 HOC 高阶组件替代
+ * 在 v6 版本中，即使当前组件基于 Route 匹配渲染的，也无法基于 props 获取到 history、location、match 相关信息
+ * 想要获取这些信息，只能通过 Hooks 函数获取【组件还是必须在 HashRouter 或 BrowserRouter 中】
+ * 在 v6 版本中，路由的隐式传参信息在页面刷新后依旧存在，这与 v5 版本不一样
  */
 
 export default function LatestApp() {
@@ -11,6 +27,8 @@ export default function LatestApp() {
     <HashRouter>
       <div>
         <span>这里是单页面应用，即将开始使用 React Router V6</span>
+        <span> | </span>
+        <Navigation></Navigation>
       </div>
       {/* 路由导航 */}
       <nav>
@@ -38,12 +56,53 @@ export default function LatestApp() {
             <Route path="/home/b" element={<B></B>}></Route>
             <Route path="/home/c" element={<C></C>}></Route>
           </Route>
-          <Route path="/about" element={<About></About>}></Route>
+          <Route path="/about/:id?" element={<About></About>}></Route>
           <Route path="/my" element={<My></My>}></Route>
           <Route path="*" element={<Navigate to="/" replace></Navigate>}></Route>
         </Routes>
       </div>
     </HashRouter>
+  );
+}
+
+function Navigation() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <button
+        onClick={() => {
+          // navigate('/my?a=1&b=2&c=3');
+          navigate({
+            pathname: '/my',
+            search: 'a=1&b=2&c=3'
+          });
+        }}
+      >
+        search 传参
+      </button>
+      <button
+        onClick={() => {
+          // navigate('/about/123');
+          navigate({
+            pathname: '/about/123'
+          });
+        }}
+      >
+        params 传参
+      </button>
+      <button
+        onClick={() => {
+          navigate('/about', {
+            state: {
+              id: 999,
+              text: '我是隐式信息哟~'
+            }
+          });
+        }}
+      >
+        state 传参
+      </button>
+    </>
   );
 }
 
@@ -67,6 +126,10 @@ export function Home() {
 }
 
 export function About() {
+  console.log(useParams());
+
+  const location = useLocation();
+  console.log(location.state);
   return (
     <>
       <div>关于</div>
@@ -75,6 +138,9 @@ export function About() {
 }
 
 export function My() {
+  const location = useLocation();
+  console.log(location.search.slice(1));
+  console.log(useSearchParams());
   return (
     <>
       <div>我的</div>
