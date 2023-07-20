@@ -1,10 +1,11 @@
 import { Navigate } from 'react-router-dom-v6';
 import { Home, About, My, A, B, C } from '../LatestApp';
+import { lazy } from 'react';
 
 /**
  * 配置路由表，数组中每一项都是一个路由规则
  *    path 匹配的路径
- *    element 匹配到要渲染的组件
+ *    component 匹配到要渲染的组件
  *    name 路由名称
  *    meta 路由元信息
  *    children 子路由
@@ -13,43 +14,43 @@ import { Home, About, My, A, B, C } from '../LatestApp';
 export const routes = [
   {
     path: '/',
-    element: () => <Navigate to="/home" replace></Navigate>
+    component: () => <Navigate to="/home" replace></Navigate>
   },
   {
     path: '/home',
-    element: Home,
+    component: Home,
     name: 'home',
     children: [
       {
         path: '/home',
-        element: () => <Navigate to="/home/a" replace></Navigate>
+        component: () => <Navigate to="/home/a" replace></Navigate>
       },
       {
         path: '/home/a',
-        element: A
+        component: A
       },
       {
         path: '/home/b',
-        element: B
+        component: B
       },
       {
         path: '/home/c',
-        element: C
+        component: C
       }
     ]
   },
   {
     path: '/about/:id?',
-    element: About,
+    component: About,
     name: 'about'
   },
   {
     path: '/my',
-    element: My,
+    component: My,
     name: 'my'
   },
   {
     path: '*',
-    element: () => <Navigate to="/" replace></Navigate>
+    component: () => <Navigate to="/" replace></Navigate>
   }
 ];

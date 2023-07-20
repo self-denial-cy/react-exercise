@@ -12,6 +12,7 @@ import {
   useSearchParams,
   useParams
 } from 'react-router-dom-v6';
+import RouterView from './latest-router';
 
 /**
  * react-router-dom v6 中移除了 Switch、Redirect、withRouter 组件
@@ -46,20 +47,21 @@ export default function LatestApp() {
               不再需要 Switch，默认就是只要匹配成功，就不再向下匹配
               不再需要 exact，默认每一项都是精准匹配
             原有的 Redirect 操作，被 Navigate 替代，遇到 Navigate 组件，就会跳转到其 to 属性指向的地址
+            v6 版本中，要求所有的路由匹配规则【二级或多级路由】不再分散到各个组件中，而是写在一起进行处理
         */}
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" replace></Navigate>}></Route>
-          <Route path="/home" element={<Home></Home>}>
-            {/* v6 版本中，要求所有的路由匹配规则【二级或多级路由】不再分散到各个组件中，而是写在一起进行处理 */}
-            <Route path="/home" element={<Navigate to="/home/a" replace></Navigate>}></Route>
-            <Route path="/home/a" element={<A></A>}></Route>
-            <Route path="/home/b" element={<B></B>}></Route>
-            <Route path="/home/c" element={<C></C>}></Route>
+        {/* <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />}></Route>
+          <Route path="/home" element={<Home />}>
+            <Route path="/home" element={<Navigate to="/home/a" replace />}></Route>
+            <Route path="/home/a" element={<A />}></Route>
+            <Route path="/home/b" element={<B />}></Route>
+            <Route path="/home/c" element={<C />}></Route>
           </Route>
-          <Route path="/about/:id?" element={<About></About>}></Route>
-          <Route path="/my" element={<My></My>}></Route>
-          <Route path="*" element={<Navigate to="/" replace></Navigate>}></Route>
-        </Routes>
+          <Route path="/about/:id?" element={<About />}></Route>
+          <Route path="/my" element={<My />}></Route>
+          <Route path="*" element={<Navigate to="/" replace />}></Route>
+        </Routes> */}
+        <RouterView></RouterView>
       </div>
     </HashRouter>
   );
