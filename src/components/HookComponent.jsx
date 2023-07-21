@@ -1,6 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useLayoutEffect, useRef, useImperativeHandle, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useImperativeHandle,
+  useMemo,
+  useCallback,
+  useReducer
+} from 'react';
 import { flushSync } from 'react-dom';
+import _ from 'lodash';
 
 /**
  * 函数式组件 or Hook 组件不是类组件，所以没有组件实例的概念【调用组件不再是创建类的实例，而是执行函数，产生一个私有上下文】
@@ -195,6 +205,7 @@ export default function HookComponent(props) {
       <ChildComponent ref={ref4}></ChildComponent>
       <ChildComponent2 handle={handle}></ChildComponent2>
       <ChildComponent3 handle={handle}></ChildComponent3>
+      <ReducerComponent></ReducerComponent>
     </>
   );
 }
@@ -239,3 +250,45 @@ const ChildComponent3 = React.memo(() => {
     </>
   );
 });
+
+function reducer(state, action) {
+  state = _.cloneDeep(state);
+  switch (action.type) {
+    case 'plus':
+      state.count++;
+      break;
+    case 'minus':
+      state.count--;
+      break;
+    default:
+      break;
+  }
+  return state;
+}
+
+function ReducerComponent() {
+  const initialState = {
+    count: 0
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state, dispatch);
+  return (
+    <>
+      <button
+        onClick={() => {
+          dispatch({ type: 'plus' });
+        }}
+      >
+        +
+      </button>
+      <span> {state.count} </span>
+      <button
+        onClick={() => {
+          dispatch({ type: 'minus' });
+        }}
+      >
+        -
+      </button>
+    </>
+  );
+}

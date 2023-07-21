@@ -26,7 +26,7 @@ export default function Home() {
         <span> | </span>
         <Link to="/home/c">C</Link>
       </nav>
-      <div>
+      {/* <div>
         <Switch>
           <Redirect exact from="/home" to="/home/a"></Redirect>
           <Route path="/home/a" component={A}></Route>
@@ -35,7 +35,7 @@ export default function Home() {
           <Redirect to="/"></Redirect>
         </Switch>
       </div>
-      <hr />
+      <hr /> */}
       <div>
         <RouterView routes={childRoutes}></RouterView>
       </div>

@@ -1,6 +1,6 @@
 import Home from '../views/home';
-import About from '../views/about';
-import My from '../views/my';
+// import About from '../views/about';
+// import My from '../views/my';
 import { A, B, C } from '../views/home';
 import { lazy } from 'react';
 
@@ -16,6 +16,9 @@ import { lazy } from 'react';
  *    meta 路由元信息
  *    children 子路由
  */
+
+const _import = require(`./_import_${process.env.NODE_ENV}`);
+// const _import = require('./_import_production');
 
 export const childRoutes = [
   {
@@ -67,14 +70,14 @@ export const routes = [
   },
   {
     path: '/about/:id?',
-    component: lazy(() => import('../views/about')),
+    component: _import('about'),
     name: 'about',
     meta: {},
     children: []
   },
   {
     path: '/my',
-    component: lazy(() => import('../views/my')),
+    component: _import('my'),
     name: 'my',
     meta: {},
     children: []

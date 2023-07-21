@@ -106,7 +106,7 @@ const ReduxContainer = connect(
 )((props) => {
   return (
     <>
-      <p>{props.title}</p>
+      {/* <p>{props.title}</p> */}
       <hr />
       <p>react-redux 初体验</p>
       <button onClick={props.countChange}>{props.count}</button>

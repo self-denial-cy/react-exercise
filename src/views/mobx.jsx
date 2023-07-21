@@ -30,7 +30,6 @@ export class MobxClassView extends React.Component {
   render() {
     return (
       <>
-        <hr />
         <button
           onClick={() => {
             store.addCount();
@@ -46,7 +45,6 @@ export class MobxClassView extends React.Component {
 export const MobxFunctionalView = observer(function () {
   return (
     <>
-      <hr />
       <button
         onClick={() => {
           store.addCount();

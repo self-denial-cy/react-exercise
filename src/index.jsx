@@ -26,25 +26,48 @@ root.render(
       <span>我是默认插槽内容</span>
       <span slot="footer">我也是具名插槽内容</span>
     </FunctionalComponent>
+    <hr />
     <Dialog title="提示" content="我是 Dialog 组件内容">
       <button>关闭</button>
     </Dialog>
+    <hr />
     <ClassComponent title="这是一个类组件"></ClassComponent>
+    <hr />
     <ClassComponentPure></ClassComponentPure>
+    <hr />
     <RefComponent></RefComponent>
+    <hr />
     <StateView></StateView>
+    <hr />
     <SyntheticSyntaxView></SyntheticSyntaxView>
+    <hr />
     <SyntheticView></SyntheticView>
+    <hr />
     <HookComponent x={13} y={14}></HookComponent>
+    <hr />
     <ClassComponentContext></ClassComponentContext>
+    <hr />
     <FunctionalComponentContext></FunctionalComponentContext>
+    <hr />
     <ReduxView></ReduxView>
+    <hr />
     <MobxClassView></MobxClassView>
+    <hr />
     <MobxFunctionalView></MobxFunctionalView>
-    {/* <hr />
-    <App></App> */}
+    <hr />
+    <App></App>
     <hr />
     <LatestApp></LatestApp>
+    <hr />
+    <button
+      onClick={() => {
+        import('./json/index.json').then((module) => {
+          console.log(module);
+        });
+      }}
+    >
+      测试
+    </button>
   </>
 );
 
@@ -57,27 +80,48 @@ setTimeout(() => {
         <span>我是默认插槽内容</span>
         <span slot="footer">我也是具名插槽内容</span>
       </FunctionalComponent>
+      <hr />
       <Dialog title="提示" content="我是 Dialog 组件内容">
         <button>关闭</button>
       </Dialog>
+      <hr />
       <ClassComponent title="这是 5 秒后传递的标题"></ClassComponent>
+      <hr />
       <ClassComponentPure></ClassComponentPure>
+      <hr />
       <RefComponent></RefComponent>
+      <hr />
       <StateView></StateView>
+      <hr />
       <SyntheticSyntaxView></SyntheticSyntaxView>
+      <hr />
       <SyntheticView></SyntheticView>
+      <hr />
       <HookComponent x={13} y={14}></HookComponent>
+      <hr />
       <ClassComponentContext></ClassComponentContext>
+      <hr />
       <FunctionalComponentContext></FunctionalComponentContext>
+      <hr />
       <ReduxView></ReduxView>
+      <hr />
       <MobxClassView></MobxClassView>
+      <hr />
       <MobxFunctionalView></MobxFunctionalView>
-      {/* <hr />
-      <App></App> */}
+      <hr />
+      <App></App>
       <hr />
       <LatestApp></LatestApp>
+      <hr />
+      <button
+        onClick={() => {
+          import('./json/index.json').then((module) => {
+            console.log(module);
+          });
+        }}
+      >
+        测试
+      </button>
     </>
   );
 }, 2000);
-
-// ! 87

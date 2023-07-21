@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import { HashRouter, BrowserRouter, Route, Switch, Redirect, Link, useHistory, NavLink } from 'react-router-dom';
-import Home from './views/home';
-import About from './views/about';
-import My from './views/my';
-import NotFound from './views/404';
+// import Home from './views/home';
+// import About from './views/about';
+// import My from './views/my';
+// import NotFound from './views/404';
 import { RouterView, routes } from './router';
 import qs from 'qs';
 
@@ -45,9 +45,9 @@ export default function App() {
       {/* 路由容器 */}
       <div>
         {/* Switch 保证了只要匹配到了路由，就不会再向下匹配 */}
-        <Switch>
-          {/* exact 属性开启了精准匹配 */}
-          <Redirect exact from="/" to="/home"></Redirect>
+        {/* <Switch> */}
+        {/* exact 属性开启了精准匹配 */}
+        {/* <Redirect exact from="/" to="/home"></Redirect>
           <Route path="/home" component={Home}></Route>
           <Route
             path="/about/:id?"
@@ -69,8 +69,8 @@ export default function App() {
                 </Suspense>
               );
             }}
-          ></Route>
-          {/* <Route
+          ></Route> */}
+        {/* <Route
             path="/404"
             render={() => {
               // 当路由地址匹配时，将 render 函数执行，返回值就是渲染的内容
@@ -80,16 +80,16 @@ export default function App() {
               return <Redirect to="/"></Redirect>;
             }}
           ></Route> */}
-          {/* 最后一项，path 设置为 * 或者不写，表示以上都不匹配，则执行这个规则 */}
-          {/* <Route component={NotFound}></Route> */}
-          {/* 也可以不设置 404 页面，而是重定向到首页
+        {/* 最后一项，path 设置为 * 或者不写，表示以上都不匹配，则执行这个规则 */}
+        {/* <Route component={NotFound}></Route> */}
+        {/* 也可以不设置 404 页面，而是重定向到首页
               Redirect 组件的 from 属性指定匹配地址，只有当匹配上，才会走重定向逻辑，以下未指定 from 属性，表示无论从哪来，都走
               重定向逻辑
               Redirect 组件还可以开启 exact 属性，修饰 from 属性的匹配规则是精准匹配还是非精准匹配
               to 属性就是要重定向的目标地址
           */}
-          <Redirect to="/"></Redirect>
-        </Switch>
+        {/* <Redirect to="/"></Redirect> */}
+        {/* </Switch> */}
       </div>
       <hr />
       <div>
