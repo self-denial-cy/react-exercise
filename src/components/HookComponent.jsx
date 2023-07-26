@@ -124,7 +124,7 @@ export default function HookComponent(props) {
     };
   });
 
-  // 永远不会触发【仅在组件更新时触发 + 无依赖项 = 永远不会触发】
+  // 仅在组件销毁时触发
   useEffect(() => {
     return () => {
       console.log('@5', count);
