@@ -25,7 +25,7 @@ function Element(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   return <Component navigate={navigate} location={location} params={params} searchParams={searchParams} />;
 }
 
@@ -44,7 +44,7 @@ export function withRouter(Component) {
     const navigate = useNavigate();
     const location = useLocation();
     const params = useParams();
-    const searchParams = useSearchParams();
+    const [searchParams] = useSearchParams();
     return <Component {...props} navigate={navigate} location={location} params={params} searchParams={searchParams} />;
   };
 }
