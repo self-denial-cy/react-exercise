@@ -1,3 +1,7 @@
+---
+typora-root-url: ./
+---
+
 #### JSX 底层渲染机制
 
 ##### JSX 底层渲染机制【创建 virtualDOM】
@@ -158,3 +162,51 @@
 - react-jss 方案【[链接](https://cssinjs.org/react-jss)】【生成 Hooks API，类组件需要借由高阶组件才能使用】
 - styled-components【[链接](https://styled-components.com/)】
 
+#### React 中的 DOM-DIFF 和 Fiber 算法
+
+1. 将 JSX 编译为虚拟 DOM【VirtualDOM】
+   1. 基于 babel-preset-react-app 将 JSX 编译为 React.createElement 格式
+   2. React.createElement 执行创建虚拟 DOM
+2. 基于 ReactDOM 中的 render 方法将虚拟 DOM 编译为真实 DOM，交给浏览器渲染
+3. 当组件更新时：
+   1. 会根据最新的数据，重新把整个 JSX 编译为新的虚拟 DOM【不论有的地方的数据是否发生改变，虚拟 DOM 都是从头到尾编译的】
+   2. 但是不会把整个虚拟 DOM 全部编译为真实 DOM，它需要经过一个 DOM-DIFF 的对比，获取到虚拟 DOM 中差异的部分，接下来只需要将差异部分渲染为真实 DOM，交给浏览器渲染
+
+> DOM-DIFF 主要就是在组件更新时，可以实现差异化的更新，而不是整体全部更新，以此来优化组件渲染的速度，提升性能
+
+##### React DOM-DIFF 算法
+
+在 React16 及以前：新老虚拟 DOM 对比
+
+在 React17 及以后：老的真实 DOM 会构建出 Fiber 链表，拿最新的虚拟 DOM 和 Fiber 链表进行对比
+
+优化原则：
+
+- 深度优先原则
+- 同级对比
+- 不同类型的元素，会产出不同的结构：销毁老结构，创建新结构
+- 可以通过 key 标识移动的元素：如果不设置 key，则默认元素的索引就是 key
+
+###### 处理规则
+
+- key 和标签类型都相同
+  - 复用老节点【内容有变更更新内容即可】【Update - 4】
+- key 和标签类型只要有一个不同
+  - 删除老节点【Deletion - 8】
+  - 插入新节点【Placement - 2】
+  - 插入并更新，也就是挪动位置【PlacementAndUpdate - 6】
+
+###### 详细的处理步骤【可能会经历二轮遍历】
+
+- 第一轮：主要是处理节点的更新，遍历 Fiber 链表按照位置比对
+  - key 不同退出第一轮循环，开启第二轮循环
+  - 第二轮开启之前，根据老的节点创建 map 对象，拿新的节点去 map 对象中找 key 相同的老节点进行比较
+- 第二轮：主要是处理节点的新增、删除、挪动，遍历新虚拟 DOM
+  - 移动时的原则是尽量少量的移动，如果有必须要动的节点，新地位高的不动，低的动【和全局的最高权重 lastPlacedIndex = 0 比较】
+- 最后渲染时，先执行标记为 8 的【删除】，然后执行标记为 4 的【更新】，接着执行标记为 6 的【移动】，最后执行标记为 2 的【新增】
+
+> 整个 DOM-DIFF 过程，非常依赖 key，因此建议循环创建元素设置唯一 key，不建议使用索引作为 key 值
+
+![diff](./docs/images/diff.png)
+
+![key](./docs/images/key.png)
