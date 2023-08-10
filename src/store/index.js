@@ -2,8 +2,10 @@ import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import reducer from './reducer';
 import reduxLogger from 'redux-logger';
 import reduxThunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { configureStore } from '@reduxjs/toolkit';
 import { appReducer } from './feature';
+import saga from './saga';
 
 // store 容器
 const store = createStore(reducer, applyMiddleware(reduxLogger, reduxThunk));
@@ -15,7 +17,9 @@ const store = createStore(reducer, applyMiddleware(reduxLogger, reduxThunk));
 
 export default store;
 
-export const sagaStore = createStore(reducer, applyMiddleware(reduxLogger));
+const sagaMiddleware = createSagaMiddleware();
+export const sagaStore = createStore(reducer, applyMiddleware(reduxLogger, sagaMiddleware));
+sagaMiddleware.run(saga);
 
 export const latestStore = configureStore({
   // 传入 reducer 和设置中间件

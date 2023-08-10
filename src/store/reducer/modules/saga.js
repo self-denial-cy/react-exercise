@@ -9,7 +9,7 @@ export function sagaReducer(state = initial, action) {
   state = _.cloneDeep(state);
   switch (action.type) {
     case TYPES.SAGA_COUNT_CHANGE:
-      state.count = action.count;
+      state.count = action.payload;
       break;
     default:
       break;
