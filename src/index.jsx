@@ -16,6 +16,9 @@ import './decorator'; // 装饰器
 import { MobxClassView, MobxFunctionalView } from './views/mobx';
 import App from './App';
 import LatestApp from './LatestApp';
+import { Provider } from 'react-redux';
+import { sagaStore } from './store';
+import { SagaView } from './views/saga';
 
 const rootEl = document.getElementById('root');
 const root = ReactDOM.createRoot(rootEl);
@@ -68,6 +71,10 @@ root.render(
     >
       测试
     </button>
+    <hr />
+    <Provider store={sagaStore}>
+      <SagaView></SagaView>
+    </Provider>
   </>
 );
 
@@ -122,8 +129,12 @@ setTimeout(() => {
       >
         测试
       </button>
+      <hr />
+      <Provider store={sagaStore}>
+        <SagaView></SagaView>
+      </Provider>
     </>
   );
 }, 2000);
 
-// ! 111
+// ! 111 1:31:23

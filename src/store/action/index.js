@@ -1,7 +1,8 @@
-import { appAction } from './modules';
+import { appAction, sagaAction } from './modules';
 
 const action = {
-  app: appAction
+  app: appAction,
+  saga: sagaAction
 };
 
 export default action;

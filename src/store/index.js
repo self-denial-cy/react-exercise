@@ -15,6 +15,8 @@ const store = createStore(reducer, applyMiddleware(reduxLogger, reduxThunk));
 
 export default store;
 
+export const sagaStore = createStore(reducer, applyMiddleware(reduxLogger));
+
 export const latestStore = configureStore({
   // 传入 reducer 和设置中间件
   reducer: {
