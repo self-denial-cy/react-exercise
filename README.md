@@ -1,7 +1,3 @@
----
-typora-root-url: ./
----
-
 #### JSX 底层渲染机制
 
 ##### JSX 底层渲染机制【创建 virtualDOM】
